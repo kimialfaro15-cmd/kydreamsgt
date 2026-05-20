@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin · KY DREAMS GT</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Jost',sans-serif;background:#faf5f7;color:#2C2C2A;min-height:100vh;}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#FBEAF0;}
+.login-box{background:#fff;border:0.5px solid #e0d0d5;border-radius:6px;padding:2.5rem;width:340px;text-align:center;}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:22px;letter-spacing:3px;color:#72243E;margin-bottom:0.25rem;}
+.login-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#D4537E;margin-bottom:2rem;}
+.login-box input{width:100%;padding:10px 12px;border:0.5px solid #e0d0d5;border-radius:2px;font-family:'Jost',sans-serif;font-size:14px;margin-bottom:1rem;outline:none;}
+.login-box input:focus{border-color:#D4537E;}
+.btn-login{width:100%;background:#993556;color:#fff;border:none;padding:11px;border-radius:2px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;}
+.btn-login:hover{background:#72243E;}
+.login-error{color:#A32D2D;font-size:12px;margin-top:0.5rem;display:none;}
+
+/* ADMIN PANEL */
+#admin-panel{display:none;}
+.admin-nav{background:#72243E;color:#fff;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;}
+.admin-nav-logo{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:3px;}
+.admin-nav span{font-size:12px;opacity:0.7;}
+.btn-logout{background:transparent;border:0.5px solid rgba(255,255,255,0.4);color:#fff;padding:6px 16px;border-radius:2px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:1px;cursor:pointer;}
+.btn-logout:hover{background:rgba(255,255,255,0.1);}
+
+.admin-body{max-width:900px;margin:0 auto;padding:2rem;}
+.admin-section{background:#fff;border:0.5px solid #e0d0d5;border-radius:4px;margin-bottom:2rem;}
+.admin-section-header{padding:1.25rem 1.5rem;border-bottom:0.5px solid #e0d0d5;display:flex;justify-content:space-between;align-items:center;}
+.admin-section-title{font-family:'Cormorant Garamond',serif;font-size:20px;}
+.admin-section-body{padding:1.5rem;}
+
+/* Product editor */
+.product-row{display:grid;grid-template-columns:90px 1fr;gap:1rem;align-items:start;padding:1rem 0;border-bottom:0.5px solid #f0e8ec;}
+.product-row:last-child{border-bottom:none;}
+.prod-thumb{width:85px;height:85px;object-fit:cover;border-radius:4px;border:0.5px solid #e0d0d5;background:#FBEAF0;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;position:relative;overflow:hidden;}
+.prod-thumb img{width:100%;height:100%;object-fit:cover;border-radius:4px;}
+.thumb-overlay{position:absolute;inset:0;background:rgba(153,53,86,0.6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:0;transition:opacity 0.2s;}
+.prod-thumb:hover .thumb-overlay{opacity:1;}
+.prod-fields{display:flex;flex-direction:column;gap:8px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.field-row.single{grid-template-columns:1fr;}
+.prod-fields input{padding:7px 10px;border:0.5px solid #e0d0d5;border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;outline:none;width:100%;}
+.prod-fields input:focus{border-color:#D4537E;}
+.prod-fields label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;margin-bottom:2px;display:block;}
+.file-input{display:none;}
+
+/* Buttons */
+.btn-save{background:#993556;color:#fff;border:none;padding:10px 28px;border-radius:2px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;}
+.btn-save:hover{background:#72243E;}
+.btn-danger{background:transparent;border:0.5px solid #E24B4A;color:#A32D2D;padding:6px 14px;border-radius:2px;font-size:11px;cursor:pointer;font-family:'Jost',sans-serif;}
+.btn-danger:hover{background:#FCEBEB;}
+.btn-outline{background:transparent;border:0.5px solid #D4537E;color:#993556;padding:8px 20px;border-radius:2px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;}
+.btn-outline:hover{background:#FBEAF0;}
+
+/* Reviews admin */
+.review-admin-card{background:#faf5f7;border:0.5px solid #e0d0d5;border-radius:4px;padding:1rem;margin-bottom:0.75rem;display:flex;justify-content:space-between;align-items:start;gap:1rem;}
+.review-admin-info{flex:1;}
+.review-admin-name{font-size:13px;font-weight:500;color:#993556;}
+.review-admin-stars{color:#E8A838;font-size:13px;margin:2px 0;}
+.review-admin-text{font-size:12px;color:#666;font-style:italic;line-height:1.5;}
+
+/* Toast */
+.toast{position:fixed;bottom:2rem;right:2rem;background:#3B6D11;color:#fff;padding:12px 24px;border-radius:4px;font-size:13px;display:none;z-index:999;}
+
+/* Add product btn */
+.btn-add-product{background:transparent;border:0.5px dashed #D4537E;color:#993556;padding:10px;border-radius:4px;width:100%;font-family:'Jost',sans-serif;font-size:13px;cursor:pointer;margin-top:1rem;}
+.btn-add-product:hover{background:#FBEAF0;}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <p class="login-logo">KY DREAMS GT</p>
+    <p class="login-sub">Panel de administración</p>
+    <input type="password" id="pw-input" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+    <p class="login-error" id="login-error">Contraseña incorrecta</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <div class="admin-nav">
+    <span class="admin-nav-logo">✦ KY DREAMS GT</span>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <span>Panel de administración</span>
+      <button class="btn-logout" onclick="logout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- PRODUCTOS -->
+    <div class="admin-section">
+      <div class="admin-section-header">
+        <p class="admin-section-title">Productos del catálogo</p>
+        <button class="btn-save" onclick="saveProducts()">Guardar cambios</button>
+      </div>
+      <div class="admin-section-body">
+        <p style="font-size:12px;color:#aaa;margin-bottom:1.5rem;">Haz clic en la foto para cambiarla. Puedes editar nombre, precio y descripción de cada producto.</p>
+        <div id="products-editor"></div>
+        <button class="btn-add-product" onclick="addProduct()">+ Agregar nuevo producto</button>
+      </div>
+    </div>
+
+    <!-- RESEÑAS -->
+    <div class="admin-section">
+      <div class="admin-section-header">
+        <p class="admin-section-title">Reseñas de clientes</p>
+        <span style="font-size:12px;color:#aaa;" id="reviews-count"></span>
+      </div>
+      <div class="admin-section-body">
+        <p style="font-size:12px;color:#aaa;margin-bottom:1.25rem;">Puedes eliminar reseñas que no quieras mostrar.</p>
+        <div id="reviews-editor"></div>
+      </div>
+    </div>
+
+    <!-- LINK SITIO -->
+    <div class="admin-section">
+      <div class="admin-section-header">
+        <p class="admin-section-title">Compartir tu página</p>
+      </div>
+      <div class="admin-section-body">
+        <p style="font-size:13px;color:#666;line-height:1.7;margin-bottom:1rem;">
+          Para que tus clientas puedan ver tu página necesitas subirla a internet. La forma más fácil y <strong>gratis</strong> es usando <strong>GitHub Pages</strong>. Sigue estos pasos:
+        </p>
+        <ol style="font-size:13px;color:#444;line-height:2;padding-left:1.25rem;">
+          <li>Ve a <strong>github.com</strong> y crea una cuenta gratis.</li>
+          <li>Crea un repositorio nuevo llamado <strong>kydreamsgt</strong>.</li>
+          <li>Sube los archivos <strong>index.html</strong> y <strong>admin.html</strong>.</li>
+          <li>Ve a <em>Settings → Pages</em> y activa GitHub Pages.</li>
+          <li>¡Listo! Tu link será: <strong>tunombre.github.io/kydreamsgt</strong></li>
+        </ol>
+        <p style="font-size:12px;color:#aaa;margin-top:1rem;">También puedes usar Netlify (netlify.com) — solo arrastra tus archivos y te da un link al instante.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast">✓ Cambios guardados correctamente</div>
+
+<script>
+const ADMIN_PASSWORD = "kydreams2026";
+
+const DEFAULT_PRODUCTS = [
+  {name:"Base de maquillaje",desc:"Cobertura total, larga duración",price:"Q120",emoji:"💄",img:""},
+  {name:"Labial mate",desc:"Colores intensos y vibrantes",price:"Q65",emoji:"💋",img:""},
+  {name:"Sombras en paleta",desc:"12 tonos ahumados y brillantes",price:"Q180",emoji:"🎨",img:""},
+  {name:"Delineador líquido",desc:"Trazo preciso y resistente",price:"Q55",emoji:"✏️",img:""},
+  {name:"Rubor en polvo",desc:"Ilumina y da vida al rostro",price:"Q90",emoji:"🌸",img:""},
+  {name:"Iluminador",desc:"Acabado luminoso y satinado",price:"Q110",emoji:"✨",img:""},
+  {name:"Máscara de pestañas",desc:"Volumen y definición extremos",price:"Q75",emoji:"👁️",img:""},
+  {name:"Corrector",desc:"Cubre ojeras e imperfecciones",price:"Q85",emoji:"🫧",img:""},
+];
+
+const DEFAULT_REVIEWS = [
+  {name:"Reina del Glam",stars:5,text:"Los productos son increíbles, la calidad supera mis expectativas. ¡Volveré a pedir!"},
+  {name:"Diosa Natural",stars:5,text:"Atención súper rápida y el maquillaje dura todo el día. Totalmente recomendado."},
+  {name:"Karla M.",stars:4,text:"Me encantó la base, cubre perfectamente. El envío fue puntual, muy buena experiencia."},
+];
+
+function loadProducts(){ try{ return JSON.parse(localStorage.getItem('kydreams_products'))||DEFAULT_PRODUCTS; }catch(e){ return DEFAULT_PRODUCTS; } }
+function loadReviews(){ try{ return JSON.parse(localStorage.getItem('kydreams_reviews'))||DEFAULT_REVIEWS; }catch(e){ return DEFAULT_REVIEWS; } }
+function saveToStorage(key,val){ localStorage.setItem(key,JSON.stringify(val)); }
+
+let products = loadProducts();
+let reviews = loadReviews();
+
+function doLogin(){
+  const pw = document.getElementById('pw-input').value;
+  if(pw === ADMIN_PASSWORD){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    renderEditor();
+    renderReviewsEditor();
+  } else {
+    document.getElementById('login-error').style.display='block';
+  }
+}
+
+function logout(){
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('admin-panel').style.display='none';
+  document.getElementById('pw-input').value='';
+}
+
+function renderEditor(){
+  document.getElementById('products-editor').innerHTML = products.map((p,i)=>`
+    <div class="product-row" id="prow-${i}">
+      <div class="prod-thumb" onclick="triggerFileUpload(${i})">
+        ${p.img ? `<img src="${p.img}" alt="${p.name}">` : `<span>${p.emoji}</span>`}
+        <div class="thumb-overlay">Cambiar foto</div>
+        <input type="file" class="file-input" id="file-${i}" accept="image/*" onchange="handleImageUpload(event,${i})">
+      </div>
+      <div class="prod-fields">
+        <div class="field-row">
+          <div>
+            <label>Nombre del producto</label>
+            <input type="text" id="pname-${i}" value="${p.name}">
+          </div>
+          <div>
+            <label>Precio</label>
+            <input type="text" id="pprice-${i}" value="${p.price}">
+          </div>
+        </div>
+        <div class="field-row single">
+          <div>
+            <label>Descripción corta</label>
+            <input type="text" id="pdesc-${i}" value="${p.desc}">
+          </div>
+        </div>
+        <div style="margin-top:4px;">
+          <button class="btn-danger" onclick="deleteProduct(${i})">Eliminar producto</button>
+          ${p.img ? `<button class="btn-outline" style="margin-left:8px;padding:6px 14px;font-size:11px;" onclick="removeImage(${i})">Quitar foto</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function triggerFileUpload(i){ document.getElementById('file-'+i).click(); }
+
+function handleImageUpload(event, i){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    products[i].img = e.target.result;
+    renderEditor();
+    showToast('Foto actualizada — recuerda guardar los cambios');
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeImage(i){
+  products[i].img = '';
+  renderEditor();
+}
+
+function addProduct(){
+  products.push({name:"Nuevo producto",desc:"Descripción del producto",price:"Q0",emoji:"💄",img:""});
+  renderEditor();
+  setTimeout(()=>{ document.getElementById('prow-'+(products.length-1)).scrollIntoView({behavior:'smooth'}); },100);
+}
+
+function deleteProduct(i){
+  if(!confirm(`¿Eliminar "${products[i].name}"?`)) return;
+  products.splice(i,1);
+  renderEditor();
+}
+
+function saveProducts(){
+  products = products.map((p,i)=>({
+    ...p,
+    name: document.getElementById('pname-'+i).value.trim() || p.name,
+    price: document.getElementById('pprice-'+i).value.trim() || p.price,
+    desc: document.getElementById('pdesc-'+i).value.trim() || p.desc,
+  }));
+  saveToStorage('kydreams_products', products);
+  renderEditor();
+  showToast('✓ Productos guardados. Recarga index.html para ver los cambios.');
+}
+
+function renderReviewsEditor(){
+  const el = document.getElementById('reviews-editor');
+  document.getElementById('reviews-count').textContent = `${reviews.length} reseña${reviews.length!==1?'s':''}`;
+  if(!reviews.length){ el.innerHTML='<p style="font-size:13px;color:#aaa;">No hay reseñas aún.</p>'; return; }
+  el.innerHTML = reviews.map((r,i)=>`
+    <div class="review-admin-card">
+      <div class="review-admin-info">
+        <p class="review-admin-name">${r.name}</p>
+        <p class="review-admin-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</p>
+        <p class="review-admin-text">"${r.text}"</p>
+      </div>
+      <button class="btn-danger" onclick="deleteReview(${i})">Eliminar</button>
+    </div>`).join('');
+}
+
+function deleteReview(i){
+  if(!confirm('¿Eliminar esta reseña?')) return;
+  reviews.splice(i,1);
+  saveToStorage('kydreams_reviews', reviews);
+  renderReviewsEditor();
+  showToast('Reseña eliminada');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',3500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KY DREAMS GT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Jost',sans-serif;color:#2C2C2A;background:#fff;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:0.5px solid #e0d0d5;background:#fff;position:sticky;top:0;z-index:10;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:3px;color:#72243E;}
+.nav-links{display:flex;gap:1.5rem;}
+.nav-links a{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#888;text-decoration:none;cursor:pointer;}
+.nav-links a:hover{color:#993556;}
+.hero{text-align:center;padding:4rem 2rem 3rem;background:#FBEAF0;}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:400;color:#72243E;letter-spacing:6px;line-height:1.1;margin-bottom:0.5rem;}
+.hero-sub{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#D4537E;margin-bottom:1.5rem;}
+.btn-rose{background:#993556;color:#fff;border:none;padding:10px 32px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;}
+.btn-rose:hover{background:#72243E;}
+section{padding:3rem 2rem;}
+.sec-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#D4537E;margin-bottom:0.5rem;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;margin-bottom:0.5rem;}
+.sec-sub{font-size:13px;color:#888;margin-bottom:2rem;}
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;}
+.product-card{background:#fff;border:0.5px solid #e0d0d5;border-radius:4px;padding:1rem;transition:border-color 0.2s;}
+.product-card:hover{border-color:#D4537E;}
+.product-img{width:100%;height:130px;border-radius:2px;object-fit:cover;display:block;margin-bottom:0.75rem;background:#FBEAF0;}
+.product-img-emoji{width:100%;height:130px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:40px;margin-bottom:0.75rem;}
+.product-name{font-size:13px;font-weight:500;margin-bottom:3px;}
+.product-desc{font-size:11px;color:#888;margin-bottom:8px;line-height:1.5;}
+.product-price{font-family:'Cormorant Garamond',serif;font-size:20px;color:#993556;margin-bottom:10px;}
+.btn-add{width:100%;background:transparent;border:0.5px solid #D4537E;color:#993556;padding:7px;border-radius:2px;font-size:11px;letter-spacing:1px;cursor:pointer;font-family:'Jost',sans-serif;}
+.btn-add:hover{background:#FBEAF0;}
+.cart-bar{background:#FBEAF0;border:0.5px solid #F4C0D1;border-radius:4px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.cart-tag{display:inline-block;background:#fff;color:#72243E;border:0.5px solid #F4C0D1;border-radius:99px;padding:3px 10px;font-size:11px;margin:2px;}
+.wa-btn{max-width:420px;background:#25D366;color:#fff;border:none;padding:13px 28px;border-radius:2px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:8px;}
+.wa-btn:hover{background:#1ebe5d;}
+.divider{border:none;border-top:0.5px solid #e0d0d5;margin:0 2rem;}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1.5rem;}
+.review-card{background:#fff;border:0.5px solid #e0d0d5;border-radius:4px;padding:1.25rem;}
+.review-stars{color:#E8A838;font-size:15px;margin-bottom:0.5rem;}
+.review-text{font-size:13px;color:#666;line-height:1.6;margin-bottom:0.75rem;font-style:italic;}
+.review-name{font-size:12px;font-weight:500;color:#993556;letter-spacing:1px;}
+.review-form{background:#faf5f7;border:0.5px solid #e0d0d5;border-radius:4px;padding:1.5rem;max-width:500px;margin-top:2rem;}
+.review-form-title{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:1.25rem;}
+.star-picker{display:flex;gap:8px;margin-bottom:1rem;font-size:28px;}
+.star-pick{color:#ddd;cursor:pointer;transition:color 0.1s;}
+.star-pick.active{color:#E8A838;}
+.form-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#888;margin-bottom:5px;display:block;margin-top:0.75rem;}
+input,select,textarea{width:100%;padding:9px 12px;border:0.5px solid #e0d0d5;border-radius:2px;font-family:'Jost',sans-serif;font-size:13px;background:#fff;color:#2C2C2A;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:#D4537E;}
+textarea{height:80px;resize:vertical;}
+.btn-submit{width:100%;background:#993556;color:#fff;border:none;padding:11px;border-radius:2px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;margin-top:1rem;}
+.btn-submit:hover{background:#72243E;}
+.success-msg{display:none;background:#EAF3DE;color:#3B6D11;border-radius:4px;padding:0.75rem;text-align:center;font-size:13px;margin-top:0.75rem;}
+.footer{padding:2rem;text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#aaa;border-top:0.5px solid #e0d0d5;margin-top:1rem;}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">KY DREAMS GT</span>
+  <div class="nav-links">
+    <a onclick="scroll2('catalogo')">Catálogo</a>
+    <a onclick="scroll2('pedidos')">Pedidos</a>
+    <a onclick="scroll2('resenas')">Reseñas</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <p class="hero-sub">Maquillaje & Belleza</p>
+  <h1 class="hero-title">KY DREAMS GT</h1>
+  <p style="font-size:13px;color:#993556;margin-bottom:1.5rem;letter-spacing:1px;">Realza tu belleza, vive el glamour</p>
+  <button class="btn-rose" onclick="scroll2('catalogo')">Ver catálogo</button>
+</div>
+
+<section id="catalogo">
+  <p class="sec-label">Nuestros productos</p>
+  <p class="sec-title">Catálogo</p>
+  <p class="sec-sub">Selecciona lo que deseas y envía tu pedido por WhatsApp 💄</p>
+  <div class="catalog-grid" id="catalog-grid"></div>
+</section>
+
+<hr class="divider">
+
+<section id="pedidos">
+  <p class="sec-label">Haz tu pedido</p>
+  <p class="sec-title">¿Qué llevas hoy?</p>
+  <p class="sec-sub">Agrega productos y envíanos tu selección directo por WhatsApp</p>
+
+  <div class="cart-bar">
+    <span style="font-size:18px;">🛍️</span>
+    <div style="flex:1;font-size:13px;color:#666;" id="cart-display">Aún no has seleccionado productos.</div>
+    <button style="background:transparent;border:0.5px solid #D4537E;color:#993556;padding:5px 14px;border-radius:2px;font-size:11px;cursor:pointer;" onclick="clearCart()">Limpiar</button>
+  </div>
+
+  <button class="wa-btn" onclick="sendWhatsApp()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.528 5.849L.057 23.571a.5.5 0 0 0 .613.612l5.701-1.461A11.946 11.946 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.826 9.826 0 0 1-5.012-1.368l-.36-.214-3.724.955.986-3.607-.235-.371A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+    Enviar pedido por WhatsApp
+  </button>
+  <p style="font-size:11px;color:#aaa;margin-top:8px;">Solo se envían los productos. Nosotras te contactamos para coordinar 💕</p>
+</section>
+
+<hr class="divider">
+
+<section id="resenas">
+  <p class="sec-label">Lo que dicen de nosotras</p>
+  <p class="sec-title">Reseñas</p>
+
+  <div class="reviews-grid" id="reviews-grid"></div>
+
+  <div class="review-form">
+    <p class="review-form-title">Deja tu reseña ✦</p>
+
+    <span class="form-label">Tu calificación</span>
+    <div class="star-picker" id="star-picker">
+      <span class="star-pick" data-v="1">★</span>
+      <span class="star-pick" data-v="2">★</span>
+      <span class="star-pick" data-v="3">★</span>
+      <span class="star-pick" data-v="4">★</span>
+      <span class="star-pick" data-v="5">★</span>
+    </div>
+
+    <span class="form-label">¿Cómo quieres aparecer?</span>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#666;">
+        <input type="radio" name="name-type" id="opt-glam" value="glam" checked onchange="toggleNameType()" style="width:auto;">
+        Nombre glam (anónima con estilo 💅)
+      </label>
+      <div id="glam-wrap">
+        <select id="glam-select" style="margin-top:4px;">
+          <option value="">— Elige tu nombre glam —</option>
+          <option>Chica Glow</option>
+          <option>Princesa Bella</option>
+          <option>Glow Girl</option>
+          <option>Reina del Glam</option>
+          <option>Angelita Cute</option>
+          <option>Diosa Natural</option>
+          <option>Estrella Latina</option>
+          <option>Love Yourself</option>
+          <option>Bella Rose</option>
+          <option>Queen Beauty</option>
+          <option>Brillito Real</option>
+          <option>Sueño Dorado</option>
+        </select>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#666;margin-top:6px;">
+        <input type="radio" name="name-type" id="opt-real" value="real" onchange="toggleNameType()" style="width:auto;">
+        Usar mi nombre real
+      </label>
+      <div id="real-wrap" style="display:none;">
+        <input type="text" id="real-name" placeholder="Tu nombre" style="margin-top:4px;">
+      </div>
+    </div>
+
+    <span class="form-label">Tu comentario</span>
+    <textarea id="review-text" placeholder="Cuéntanos tu experiencia con KY DREAMS GT..."></textarea>
+
+    <button class="btn-submit" onclick="submitReview()">Publicar reseña</button>
+    <div class="success-msg" id="review-success">✦ ¡Gracias por tu reseña! Ya aparece en nuestra página 💕</div>
+  </div>
+</section>
+
+<div class="footer">© 2026 KY DREAMS GT · Glamour hecho en Guatemala 🇬🇹</div>
+
+<script>
+const WA_LINK = "https://wa.me/message/3CUYEYC3DYVKJ1";
+
+const DEFAULT_PRODUCTS = [
+  {name:"Base de maquillaje",desc:"Cobertura total, larga duración",price:"Q120",emoji:"💄",img:""},
+  {name:"Labial mate",desc:"Colores intensos y vibrantes",price:"Q65",emoji:"💋",img:""},
+  {name:"Sombras en paleta",desc:"12 tonos ahumados y brillantes",price:"Q180",emoji:"🎨",img:""},
+  {name:"Delineador líquido",desc:"Trazo preciso y resistente",price:"Q55",emoji:"✏️",img:""},
+  {name:"Rubor en polvo",desc:"Ilumina y da vida al rostro",price:"Q90",emoji:"🌸",img:""},
+  {name:"Iluminador",desc:"Acabado luminoso y satinado",price:"Q110",emoji:"✨",img:""},
+  {name:"Máscara de pestañas",desc:"Volumen y definición extremos",price:"Q75",emoji:"👁️",img:""},
+  {name:"Corrector",desc:"Cubre ojeras e imperfecciones",price:"Q85",emoji:"🫧",img:""},
+];
+
+const DEFAULT_REVIEWS = [
+  {name:"Reina del Glam",stars:5,text:"Los productos son increíbles, la calidad supera mis expectativas. ¡Volveré a pedir!"},
+  {name:"Diosa Natural",stars:5,text:"Atención súper rápida y el maquillaje dura todo el día. Totalmente recomendado."},
+  {name:"Karla M.",stars:4,text:"Me encantó la base, cubre perfectamente. El envío fue puntual, muy buena experiencia."},
+];
+
+function loadProducts(){
+  try{ return JSON.parse(localStorage.getItem('kydreams_products')) || DEFAULT_PRODUCTS; }
+  catch(e){ return DEFAULT_PRODUCTS; }
+}
+function loadReviews(){
+  try{ return JSON.parse(localStorage.getItem('kydreams_reviews')) || DEFAULT_REVIEWS; }
+  catch(e){ return DEFAULT_REVIEWS; }
+}
+function saveReviews(r){ localStorage.setItem('kydreams_reviews', JSON.stringify(r)); }
+
+let products = loadProducts();
+let allReviews = loadReviews();
+let cart = [];
+let selectedStars = 0;
+
+function scroll2(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
+function renderCatalog(){
+  document.getElementById('catalog-grid').innerHTML = products.map((p,i)=>{
+    const imgHtml = p.img
+      ? `<img class="product-img" src="${p.img}" alt="${p.name}">`
+      : `<div class="product-img-emoji" style="background:#FBEAF0;">${p.emoji}</div>`;
+    return `<div class="product-card">
+      ${imgHtml}
+      <p class="product-name">${p.name}</p>
+      <p class="product-desc">${p.desc}</p>
+      <p class="product-price">${p.price}</p>
+      <button class="btn-add" onclick="addToCart(${i})">+ Agregar al pedido</button>
+    </div>`;
+  }).join('');
+}
+
+function addToCart(i){ cart.push(products[i]); renderCart(); }
+function clearCart(){ cart=[]; renderCart(); }
+
+function renderCart(){
+  const el=document.getElementById('cart-display');
+  if(!cart.length){ el.textContent='Aún no has seleccionado productos.'; el.style.color='#aaa'; return; }
+  const c={};
+  cart.forEach(p=>{ if(!c[p.name]) c[p.name]={price:p.price,qty:0}; c[p.name].qty++; });
+  el.style.color='#2C2C2A';
+  el.innerHTML=Object.entries(c).map(([n,d])=>
+    `<span class="cart-tag">${n}${d.qty>1?' x'+d.qty:''}</span>`).join('');
+}
+
+function sendWhatsApp(){
+  if(!cart.length){ alert('Agrega al menos un producto primero 😊'); return; }
+  const c={};
+  cart.forEach(p=>{ if(!c[p.name]) c[p.name]={price:p.price,qty:0}; c[p.name].qty++; });
+  const lista=Object.entries(c).map(([n,d])=>`• ${n}${d.qty>1?' x'+d.qty:''} (${d.price})`).join('\n');
+  const msg=`¡Hola KY DREAMS GT! 💄 Quiero pedir:\n\n${lista}`;
+  window.open(`${WA_LINK}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+function renderReviews(){
+  document.getElementById('reviews-grid').innerHTML=allReviews.map(r=>`
+    <div class="review-card">
+      <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      <p class="review-text">"${r.text}"</p>
+      <p class="review-name">— ${r.name}</p>
+    </div>`).join('');
+}
+
+document.getElementById('star-picker').querySelectorAll('.star-pick').forEach(s=>{
+  s.addEventListener('click',()=>{
+    selectedStars=parseInt(s.dataset.v);
+    document.querySelectorAll('.star-pick').forEach(x=>x.classList.toggle('active',parseInt(x.dataset.v)<=selectedStars));
+  });
+});
+
+function toggleNameType(){
+  const isGlam=document.getElementById('opt-glam').checked;
+  document.getElementById('glam-wrap').style.display=isGlam?'block':'none';
+  document.getElementById('real-wrap').style.display=isGlam?'none':'block';
+}
+
+function submitReview(){
+  const isGlam=document.getElementById('opt-glam').checked;
+  const name=isGlam?document.getElementById('glam-select').value:document.getElementById('real-name').value.trim();
+  const text=document.getElementById('review-text').value.trim();
+  if(!selectedStars){ alert('Por favor selecciona tu calificación con estrellas ⭐'); return; }
+  if(!name){ alert('Por favor elige o escribe un nombre.'); return; }
+  if(!text){ alert('Por favor escribe tu comentario.'); return; }
+  allReviews.unshift({name,stars:selectedStars,text});
+  saveReviews(allReviews);
+  renderReviews();
+  document.getElementById('review-success').style.display='block';
+  document.getElementById('review-text').value='';
+  document.getElementById('glam-select').value='';
+  document.getElementById('real-name').value='';
+  selectedStars=0;
+  document.querySelectorAll('.star-pick').forEach(x=>x.classList.remove('active'));
+  setTimeout(()=>document.getElementById('review-success').style.display='none',4000);
+}
+
+renderCatalog();
+renderReviews();
+</script>
+</body>
+</html>
