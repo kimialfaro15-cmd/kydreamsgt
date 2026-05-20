@@ -165,123 +165,112 @@ textarea{height:80px;resize:vertical;}
 
 <div class="footer">© 2026 KY DREAMS GT · Glamour hecho en Guatemala 🇬🇹</div>
 
-<script>
-const WA_LINK = "https://wa.me/message/3CUYEYC3DYVKJ1";
 
-const DEFAULT_PRODUCTS = [
-  {name:"Base de maquillaje",desc:"Cobertura total, larga duración",price:"Q120",emoji:"💄",img:""},
-  {name:"Labial mate",desc:"Colores intensos y vibrantes",price:"Q65",emoji:"💋",img:""},
-  {name:"Sombras en paleta",desc:"12 tonos ahumados y brillantes",price:"Q180",emoji:"🎨",img:""},
-  {name:"Delineador líquido",desc:"Trazo preciso y resistente",price:"Q55",emoji:"✏️",img:""},
-  {name:"Rubor en polvo",desc:"Ilumina y da vida al rostro",price:"Q90",emoji:"🌸",img:""},
-  {name:"Iluminador",desc:"Acabado luminoso y satinado",price:"Q110",emoji:"✨",img:""},
-  {name:"Máscara de pestañas",desc:"Volumen y definición extremos",price:"Q75",emoji:"👁️",img:""},
-  {name:"Corrector",desc:"Cubre ojeras e imperfecciones",price:"Q85",emoji:"🫧",img:""},
-];
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const DEFAULT_REVIEWS = [
-  {name:"Reina del Glam",stars:5,text:"Los productos son increíbles, la calidad supera mis expectativas. ¡Volveré a pedir!"},
-  {name:"Diosa Natural",stars:5,text:"Atención súper rápida y el maquillaje dura todo el día. Totalmente recomendado."},
-  {name:"Karla M.",stars:4,text:"Me encantó la base, cubre perfectamente. El envío fue puntual, muy buena experiencia."},
-];
+const firebaseConfig = {
+  apiKey: "AIzaSyC2IjFT0BXPHC16W_Xqrfy1jYP55yAWYE",
+  authDomain: "ky-dreams-gt.firebaseapp.com",
+  projectId: "ky-dreams-gt",
+  storageBucket: "ky-dreams-gt.firebasestorage.app",
+  messagingSenderId: "237282218137",
+  appId: "1:237282218137:web:f5d36393e3ca6ecc80a808"
+};
 
-function loadProducts(){
-  try{ return JSON.parse(localStorage.getItem('kydreams_products')) || DEFAULT_PRODUCTS; }
-  catch(e){ return DEFAULT_PRODUCTS; }
-}
-function loadReviews(){
-  try{ return JSON.parse(localStorage.getItem('kydreams_reviews')) || DEFAULT_REVIEWS; }
-  catch(e){ return DEFAULT_REVIEWS; }
-}
-function saveReviews(r){ localStorage.setItem('kydreams_reviews', JSON.stringify(r)); }
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-let products = loadProducts();
-let allReviews = loadReviews();
+let products = [];
+let allReviews = JSON.parse(localStorage.getItem('kydreams_reviews')) || [];
 let cart = [];
 let selectedStars = 0;
 
-function scroll2(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+async function loadProducts(){
+  try {
+    const snapshot = await getDocs(collection(db, "productos"));
+
+    products = [];
+
+    snapshot.forEach(doc => {
+      products.push(doc.data());
+    });
+
+    renderCatalog();
+
+  } catch (error) {
+    console.error("Error cargando productos:", error);
+  }
+}
 
 function renderCatalog(){
   document.getElementById('catalog-grid').innerHTML = products.map((p,i)=>{
+
     const imgHtml = p.img
-      ? `<img class="product-img" src="${p.img}" alt="${p.name}">`
-      : `<div class="product-img-emoji" style="background:#FBEAF0;">${p.emoji}</div>`;
-    return `<div class="product-card">
-      ${imgHtml}
-      <p class="product-name">${p.name}</p>
-      <p class="product-desc">${p.desc}</p>
-      <p class="product-price">${p.price}</p>
-      <button class="btn-add" onclick="addToCart(${i})">+ Agregar al pedido</button>
-    </div>`;
+      ? `<img class="product-img" src="${p.img}">`
+      : `<div class="product-img-emoji">💄</div>`;
+
+    return `
+      <div class="product-card">
+        ${imgHtml}
+        <p class="product-name">${p.nombre}</p>
+        <p class="product-desc">${p.descripcion}</p>
+        <p class="product-price">${p.precio}</p>
+        <button class="btn-add" onclick="addToCart(${i})">+ Agregar al pedido</button>
+      </div>
+    `;
   }).join('');
 }
 
 function addToCart(i){ cart.push(products[i]); renderCart(); }
-function clearCart(){ cart=[]; renderCart(); }
 
 function renderCart(){
   const el=document.getElementById('cart-display');
-  if(!cart.length){ el.textContent='Aún no has seleccionado productos.'; el.style.color='#aaa'; return; }
+
+  if(!cart.length){
+    el.textContent='Aún no has seleccionado productos.';
+    return;
+  }
+
   const c={};
-  cart.forEach(p=>{ if(!c[p.name]) c[p.name]={price:p.price,qty:0}; c[p.name].qty++; });
-  el.style.color='#2C2C2A';
-  el.innerHTML=Object.entries(c).map(([n,d])=>
-    `<span class="cart-tag">${n}${d.qty>1?' x'+d.qty:''}</span>`).join('');
+  cart.forEach(p=>{
+    if(!c[p.nombre]) c[p.nombre]={price:p.precio,qty:0};
+    c[p.nombre].qty++;
+  });
+
+  el.innerHTML = Object.entries(c)
+    .map(([n,d])=>`<span class="cart-tag">${n} x${d.qty}</span>`)
+    .join('');
 }
 
+function clearCart(){ cart=[]; renderCart(); }
+
 function sendWhatsApp(){
-  if(!cart.length){ alert('Agrega al menos un producto primero 😊'); return; }
+  if(!cart.length){ alert('Agrega productos primero'); return; }
+
   const c={};
-  cart.forEach(p=>{ if(!c[p.name]) c[p.name]={price:p.price,qty:0}; c[p.name].qty++; });
-  const lista=Object.entries(c).map(([n,d])=>`• ${n}${d.qty>1?' x'+d.qty:''} (${d.price})`).join('\n');
-  const msg=`¡Hola KY DREAMS GT! 💄 Quiero pedir:\n\n${lista}`;
-  window.open(`${WA_LINK}?text=${encodeURIComponent(msg)}`,'_blank');
+  cart.forEach(p=>{
+    if(!c[p.nombre]) c[p.nombre]={price:p.precio,qty:0};
+    c[p.nombre].qty++;
+  });
+
+  const lista = Object.entries(c)
+    .map(([n,d])=>`• ${n} x${d.qty}`)
+    .join('\n');
+
+  const msg=`Hola KY DREAMS GT 💄\n\nQuiero pedir:\n\n${lista}`;
+
+  window.open(`https://wa.me/message/3CUYEYC3DYVKJ1?text=${encodeURIComponent(msg)}`);
 }
 
 function renderReviews(){
-  document.getElementById('reviews-grid').innerHTML=allReviews.map(r=>`
-    <div class="review-card">
-      <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-      <p class="review-text">"${r.text}"</p>
-      <p class="review-name">— ${r.name}</p>
-    </div>`).join('');
+  document.getElementById('reviews-grid').innerHTML = "";
 }
 
-document.getElementById('star-picker').querySelectorAll('.star-pick').forEach(s=>{
-  s.addEventListener('click',()=>{
-    selectedStars=parseInt(s.dataset.v);
-    document.querySelectorAll('.star-pick').forEach(x=>x.classList.toggle('active',parseInt(x.dataset.v)<=selectedStars));
-  });
-});
-
-function toggleNameType(){
-  const isGlam=document.getElementById('opt-glam').checked;
-  document.getElementById('glam-wrap').style.display=isGlam?'block':'none';
-  document.getElementById('real-wrap').style.display=isGlam?'none':'block';
-}
-
-function submitReview(){
-  const isGlam=document.getElementById('opt-glam').checked;
-  const name=isGlam?document.getElementById('glam-select').value:document.getElementById('real-name').value.trim();
-  const text=document.getElementById('review-text').value.trim();
-  if(!selectedStars){ alert('Por favor selecciona tu calificación con estrellas ⭐'); return; }
-  if(!name){ alert('Por favor elige o escribe un nombre.'); return; }
-  if(!text){ alert('Por favor escribe tu comentario.'); return; }
-  allReviews.unshift({name,stars:selectedStars,text});
-  saveReviews(allReviews);
-  renderReviews();
-  document.getElementById('review-success').style.display='block';
-  document.getElementById('review-text').value='';
-  document.getElementById('glam-select').value='';
-  document.getElementById('real-name').value='';
-  selectedStars=0;
-  document.querySelectorAll('.star-pick').forEach(x=>x.classList.remove('active'));
-  setTimeout(()=>document.getElementById('review-success').style.display='none',4000);
-}
-
-renderCatalog();
+loadProducts();
 renderReviews();
 </script>
+
 </body>
 </html>
